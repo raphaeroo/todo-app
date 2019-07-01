@@ -6,7 +6,9 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import rootReducer from './reducers';
 
-const store = createStore(rootReducer)
+import devToolsEnhancer from 'remote-redux-devtools';
+
+const store = createStore(rootReducer, devToolsEnhancer({realtime: true}));
 
 
 export default class TodoApp extends React.Component {

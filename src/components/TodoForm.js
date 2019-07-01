@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import Inputer from './Input';
 
-export default class TodoForm extends Component {
+import {connect} from 'react-redux';
+import { addTodo } from '../actions';
+
+class TodoForm extends Component {
     constructor(props){
         super(props);
 
@@ -17,7 +20,7 @@ export default class TodoForm extends Component {
     }
 
     onPress(){
-        console.log(this.state.text);
+        this.props.dispatchAddTodo(this.state.text);
     }
 
     render(){
@@ -57,3 +60,18 @@ const styles = StyleSheet.create({
         height: 200
     }
 });
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         dispatchAddTodo: text => dispatch(addTodo(text))
+//     }
+// }
+
+// const mapDispatchToProps = {
+//     dispatchAddTodo: addTodo
+// }
+
+// Curryng
+export default connect(null, {
+    dispatchAddTodo: addTodo
+})(TodoForm);
