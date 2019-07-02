@@ -21,6 +21,7 @@ class TodoForm extends Component {
 
     onPress(){
         this.props.dispatchAddTodo(this.state.text);
+        this.setState({text: ''});
     }
 
     render(){
@@ -50,6 +51,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: '100%',
         width: '100%',
+        marginBottom: 10,
+        paddingBottom: 15,
     },
     input: {
         flex: 4,
