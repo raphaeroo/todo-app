@@ -1,70 +1,75 @@
-import React, {Component} from 'react';
-import { View, Button, StyleSheet } from 'react-native';
-import Inputer from './Input';
+import React from 'react';
+import { View, StyleSheet, Button } from 'react-native';
+import { connect } from 'react-redux';
 
-import {connect} from 'react-redux';
-import { addTodo, setTodoText } from '../actions';
+import { setTodoText, addTodo, updateTodo } from '../actions';
 
-class TodoForm extends Component {
-    onChangeText(text) {
-        this.props.dispatchSetTodoText(text);       
-    }
+import Input from './Input';
 
-    onPress(){
-        const { text } = this.props.todo;
-        this.props.dispatchAddTodo(text);        
-    }
+class TodoForm extends React.Component {
+	onChangeText(text) {
+		this.props.dispatchSetTodoText(text);
+	}
 
-    render(){
-        const { text } = this.props.todo;
-        return(
-            <View style={styles.container}>
-                <View style={styles.input}>
-                   <Inputer                        
-                       onChangeText = { text => this.onChangeText(text) }
-                       value = { text }
-                   />
-                </View>
-                <View style={styles.button}>
-                    <Button 
-                        title="ADD"
-                        onPress={() => this.onPress()}
-                    />
-                </View>
-            </View>
-        );
-    }
+	onPress() {
+		const { todo } = this.props;
+		if (todo.id)
+			return this.props.dispatchUpdateTodo(todo);
+
+		const { text } = todo;
+		this.props.dispatchAddTodo(text);
+	}
+
+	render() {
+		const { text, id } = this.props.todo;
+		return (
+			<View style={styles.formContainer}>
+				<View style={styles.inputContainer}>
+					<Input
+						onChangeText={text => this.onChangeText(text)}
+						value={text}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button
+						onPress={() => this.onPress()}
+						title={id ? "save" : "add"}
+					/>
+				</View>
+			</View>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,        
-        flexDirection: 'row',
-        height: '100%',
-        width: '100%',
-        marginBottom: 10,
-        paddingBottom: 15,
-    },
-    input: {
-        flex: 4,
-        height: 200,
-    },
-    button: {
-        flex: 1,
-        height: 200
-    }
+	formContainer: {
+		flexDirection: 'row',
+	},
+	inputContainer: {
+		flex: 4
+	},
+	buttonContainer: {
+		flex: 1
+	}
 });
 
+// const mapDispatchToProps = dispatch => {
+// 	return {
+// 		dispatchAddTodo: text => dispatch(addTodo(text))
+// 	}
+// }
+
 const mapStateToProps = state => {
-    return {
-        todo: state.editingTodo
-    }
+	return {
+		todo: state.editingTodo
+	}
 }
 
-// Curryng
 export default connect(
-    mapStateToProps, {
-        dispatchAddTodo: addTodo,
-        dispatchSetTodoText: setTodoText
-    }   
-    )(TodoForm);
+	mapStateToProps,
+	{
+		dispatchSetTodoText: setTodoText,
+		dispatchAddTodo: addTodo,
+		dispatchUpdateTodo: updateTodo
+	}
+)(TodoForm);

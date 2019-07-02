@@ -1,22 +1,28 @@
-import {SET_TODO_TEXT, ADD_TODO} from '../actions';
+import {
+    SET_TODO_TEXT,
+    ADD_TODO,
+    UPDATE_TODO,
+    SET_EDITING_TODO
+} from '../actions';
 
-const INITAL_STATE = {
+const INITIAL_STATE = {
     id: null,
     text: '',
     done: false
 };
 
-const editingTodoReducer = (state = INITAL_STATE , action) => {
-    switch (action.type){
-        case  SET_TODO_TEXT:         
+const editingTodoReducer = (state = INITIAL_STATE, action) => {
+    switch (action.type) {
+        case SET_TODO_TEXT:
             return {
-              ...state,
-              text: action.text
+                ...state,
+                text: action.text
             };
         case ADD_TODO:
-            return {
-                INITAL_STATE
-            }
+        case UPDATE_TODO:
+            return INITIAL_STATE;
+        case SET_EDITING_TODO:
+            return action.todo;
         default:
             return state;
     }
